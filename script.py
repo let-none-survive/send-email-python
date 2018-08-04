@@ -1,4 +1,5 @@
 import smtplib
+import getpass
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -17,10 +18,10 @@ server.starttls()
 msg = MIMEMultipart()
 
 email_login = input("Enter your gmail login: ")
-email_password = input("Enter your gmail password: ")
+email_password = getpass.getpass('Enter your gmail password: ')
 
 server.login(email_login, email_password)
-
+    
 receiver_email = input("Enter receiver email: ")
 
 msg["From"] = email_login
@@ -31,7 +32,7 @@ message_text = input("Enter message: ")
  
 answer = confirm_choice()
 
-if answer: 
+if answer == 'Y': 
 	filename = input("Enter a file name with extension: ")
 	path = input("Drag the file into console to copy path: ")
 	attachment = open(path, "rb")
@@ -48,8 +49,7 @@ if answer:
 
 	server.sendmail(email_login, receiver_email, text)
 else: 
-	text = msg.as_string()
-	server.sendmail(email_login, receiver_email, text)
+	server.sendmail(email_login, receiver_email, message_text)
 
 server.quit()
 
